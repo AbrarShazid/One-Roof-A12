@@ -12,10 +12,11 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItemClass = ({ isActive }) =>
+  const navItemClass = ({ isActive }) =>{
     isActive
       ? `border-b-2 ${isDark ? 'border-[#C2DFE3]' : 'border-[#253237]'} font-semibold`
       : "hover:opacity-80 transition-opacity";
+  }
 
   return (
     <div className={`w-full ${isDark ? 'bg-[#253237]/90 text-[#C2DFE3]' : 'bg-[#C2DFE3]/90 text-[#253237]'} sticky top-0 z-50 backdrop-blur-md shadow-sm`}>
@@ -77,7 +78,7 @@ const Navbar = () => {
                 layout
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 className={`absolute w-5 h-5 rounded-full shadow-md flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-white'}`}
-                style={{ left: isDark ? 'calc(100% - 1.25rem)' : '0.25rem' }}
+                style={{ left: isDark ? 'calc(100% - 1.5rem)' : '0.25rem' }}
               >
                 {isDark ? (
                   <FaMoon className="text-gray-300 text-xs" />
