@@ -9,14 +9,14 @@ const Footer = () => {
       : "hover:opacity-80 transition-opacity text-sm";
 
   return (
-    <footer className={`w-full bg-[#37423D] text-[#F9F7F3] transition-colors duration-300`}>
+    <footer className={`w-full bg-[#142921] text-[#F9F7F3] transition-colors duration-300`}>
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Column 1 - About */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold">One Roof</h3>
             <p className="text-sm">
-              Your home, your tools — everything you need for apartment living, in one place.
+            Elevated living, simplified - all under One Roof
             </p>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com" target='_blank' rel="noopener noreferrer" aria-label="Facebook" className="hover:opacity-80 transition-opacity">
@@ -76,7 +76,7 @@ const Footer = () => {
               />
               <button 
                 type="submit"
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-[#F9F7F3] text-[#37423D] hover:bg-[#F9F7F3]/90 transition-colors"
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90 transition-colors"
               >
                 Subscribe
               </button>

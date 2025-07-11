@@ -4,34 +4,45 @@ import { Link, NavLink } from 'react-router';
 import { MdOutlineLogin, MdOutlineLogout } from "react-icons/md";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import BlurText from '../BlurText/BlurText';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+
+
+
   const navItemClass = ({ isActive }) => 
     isActive
       ? "border-b-2 border-[#F9F7F3] font-semibold"
-      : "hover:opacity-80 transition-opacity";
+      : "hover:bg-[#F9F7F3]/20 px-2 py-1 hover:rounded-3xl  transition-opacity";
 
   return (
-    <div className={`w-full bg-[#37423D]/80 text-[#F9F7F3] sticky top-0 z-50 backdrop-blur-md shadow-sm`}>
+    <div className={`w-full text-[#F9F7F3] sticky top-0 z-50  bg-[#142921] }`}>
       
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex justify-between items-center">
-    
           <div className="flex items-center gap-3">
             <img 
-              className="w-10 h-10 rounded-full border border-[#F9F7F3]/30" 
+              className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border border-[#F9F7F3]/30" 
               src={logo} 
               alt="logo" 
             />
-            <Link 
-              to="/" 
-              className="text-xl font-bold tracking-tight"
-            >
-              One Roof
-            </Link>
+          
+
+<BlurText
+  text="One Roof"
+  delay={150}
+  animateBy="characters"
+  direction="top"
+  className='text-xl lg:text-2xl font-bold '
+  
+ 
+/>
+
+              
+           
           </div>
 
           {/* Desktop Navigation - Centered */}
@@ -44,12 +55,11 @@ const Navbar = () => {
 
           {/* Right Side Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Auth Button */}
             <motion.button
               onClick={() => setIsLoggedIn(!isLoggedIn)}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F9F7F3] text-[#37423D] hover:bg-[#F9F7F3]/90 transition-colors`}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90 transition-colors`}
             >
               {isLoggedIn ? (
                 <>
@@ -87,8 +97,8 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`md:hidden overflow-hidden bg-[#37423D] shadow-lg`}
+            transition={{ duration: 0.3 ,delay:0.1}}
+            className={`md:hidden overflow-hidden ${isScrolled ? 'bg-[#142921]/90' : 'bg-[#142921]'} shadow-lg`}
           >
             <div className="container mx-auto px-4 py-3 flex flex-col gap-4">
               <NavLink 
@@ -114,7 +124,7 @@ const Navbar = () => {
                   setIsLoggedIn(!isLoggedIn);
                   setIsMenuOpen(false);
                 }}
-                className={`flex items-center gap-3 py-2 text-lg w-full rounded-lg ${isLoggedIn ? 'text-[#F9F7F3] hover:bg-[#F9F7F3]/10' : 'bg-[#F9F7F3] text-[#37423D] hover:bg-[#F9F7F3]/90'} transition-colors px-3`}
+                className={`flex items-center gap-3 py-2 text-lg w-full rounded-lg ${isLoggedIn ? 'text-[#F9F7F3] hover:bg-[#F9F7F3]/10' : 'bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90'} transition-colors px-3`}
               >
                 {isLoggedIn ? (
                   <>
