@@ -13,36 +13,33 @@ const Navbar = () => {
 
 
 
-  const navItemClass = ({ isActive }) => 
+  const navItemClass = ({ isActive }) =>
     isActive
       ? "border-b-2 border-[#BED4D1] px-2 py-1 "
       : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-3xl  transition-opacity";
 
   return (
-    <div className={`w-full text-[#F9F7F3] sticky top-0 z-50  bg-[#142921] }`}>
-      
-      <div className="container mx-auto px-4 py-2">
+    <div className={`w-full text-[#F9F7F3] sticky top-0 z-50  bg-[#142921]  `}>
+
+      <div className="container  py-2 mx-auto">
         <div className="flex justify-between items-center">
+
           <div className="flex items-center gap-3">
-            <img 
-              className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border border-[#F9F7F3]/30" 
-              src={logo} 
-              alt="logo" 
+            <img
+              className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border border-[#F9F7F3]/30"
+              src={logo}
+              alt="logo"
             />
-          
 
-<BlurText
-  text="One Roof"
-  delay={150}
-  animateBy="characters"
-  direction="top"
-  className='text-xl lg:text-2xl font-bold '
-  
- 
-/>
 
-              
-           
+            <BlurText
+              text="One Roof"
+              delay={150}
+              animateBy="characters"
+              direction="top"
+              className='text-xl lg:text-2xl font-bold '
+
+            />
           </div>
 
           {/* Desktop Navigation - Centered */}
@@ -76,7 +73,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 rounded-lg hover:bg-[#F9F7F3]/20 transition-colors"
             aria-label="Toggle menu"
@@ -97,20 +94,20 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 ,delay:0.1}}
+            transition={{ duration: 0.3, delay: 0.1 }}
             className={`md:hidden overflow-hidden bg-[#142921] shadow-lg`}
           >
             <div className="container mx-auto px-4 py-3 flex flex-col gap-4">
-              <NavLink 
-                to="/" 
+              <NavLink
+                to="/"
                 className={`py-2 text-lg ${navItemClass}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </NavLink>
-              
-              <NavLink 
-                to="/apartments" 
+
+              <NavLink
+                to="/apartments"
                 className={`py-2 text-lg ${navItemClass}`}
                 onClick={() => setIsMenuOpen(false)}
               >

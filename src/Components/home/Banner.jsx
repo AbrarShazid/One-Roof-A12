@@ -99,13 +99,13 @@ const Banner = () => {
 
                 {/* Explore Button */}
 
-                <Link to={'/apartments'} className="w-max my-3 px-6 py-2 rounded-full bg-[#142921] text-[#bed4d1] font-semibold hover:scale-105 transition duration-300 shadow-md">
+                <Link to={'/apartments'} className="w-max my-3 px-6 py-2 rounded-full bg-white text-black hover:bg-[#142921] hover:text-[#bed4d1] font-semibold hover:scale-105 transition duration-300 shadow-md">
                   Explore Apartments
                 </Link>
 
               </div>
 
-              {/* Right Section (Stats) – Hidden on Mobile */}
+              {/* Right Section  */}
               <div className="hidden md:grid grid-cols-2 gap-4 lg:gap-6 w-[100%]">
                 {stats.map((stat, i) => (
                   <div
