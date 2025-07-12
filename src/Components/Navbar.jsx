@@ -15,8 +15,8 @@ const Navbar = () => {
 
   const navItemClass = ({ isActive }) => 
     isActive
-      ? "border-b-2 border-[#F9F7F3] font-semibold"
-      : "hover:bg-[#F9F7F3]/20 px-2 py-1 hover:rounded-3xl  transition-opacity";
+      ? "border-b-2 border-[#BED4D1] px-2 py-1 "
+      : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-3xl  transition-opacity";
 
   return (
     <div className={`w-full text-[#F9F7F3] sticky top-0 z-50  bg-[#142921] }`}>
@@ -59,7 +59,7 @@ const Navbar = () => {
               onClick={() => setIsLoggedIn(!isLoggedIn)}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90 transition-colors`}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#BED4D1] text-[#142921] hover:bg-[#BED4D1]/90 transition-colors`}
             >
               {isLoggedIn ? (
                 <>
@@ -98,7 +98,7 @@ const Navbar = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 ,delay:0.1}}
-            className={`md:hidden overflow-hidden ${isScrolled ? 'bg-[#142921]/90' : 'bg-[#142921]'} shadow-lg`}
+            className={`md:hidden overflow-hidden bg-[#142921] shadow-lg`}
           >
             <div className="container mx-auto px-4 py-3 flex flex-col gap-4">
               <NavLink 
@@ -124,7 +124,7 @@ const Navbar = () => {
                   setIsLoggedIn(!isLoggedIn);
                   setIsMenuOpen(false);
                 }}
-                className={`flex items-center gap-3 py-2 text-lg w-full rounded-lg ${isLoggedIn ? 'text-[#F9F7F3] hover:bg-[#F9F7F3]/10' : 'bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90'} transition-colors px-3`}
+                className={`flex items-center gap-3 py-2 text-lg w-full rounded-lg ${isLoggedIn ? 'text-[#F9F7F3] hover:bg-[#BED4D1]/10' : 'bg-[#BED4D1] text-[#142921] hover:bg-[#BED4D1]/90'} transition-colors px-3`}
               >
                 {isLoggedIn ? (
                   <>
