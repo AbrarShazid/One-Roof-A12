@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import Navbar from '../Components/Navbar';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import Footer from '../Components/Footer';
 import Lenis from 'lenis';
+import { AnimatePresence } from 'framer-motion';
+
 
 
 const HomeLayout = () => {
+
+  const location = useLocation();
   useEffect(() => {
     const lenis = new Lenis();
     function raf(time) {
@@ -21,11 +25,15 @@ const HomeLayout = () => {
 
 
 
+
   return (
     <div className='flex flex-col min-h-screen manrope'>
       <Navbar />
       <div className='flex-grow'>
-        <Outlet />
+        <AnimatePresence mode="wait">
+          {/* Key based on location for transitions */}
+          <Outlet key={location.pathname} />
+        </AnimatePresence>
       </div>
 
       <Footer />

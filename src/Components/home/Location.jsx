@@ -157,7 +157,7 @@ const Location = () => {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center mb-8">
+        <motion.div variants={itemVariants} className="flex flex-wrap justify-center mb-8">
           <div className="bg-white/1 backdrop-blur-md rounded-full p-1 shadow-2xl flex border border-[#bed4d1]">
             {['Overview', 'Transport', 'Nearby'].map((tab) => (
               <motion.button
@@ -183,10 +183,10 @@ const Location = () => {
               </motion.button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Content Sections */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
           {activeTab === 'Overview' && (
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-gray-800 mb-6">Location Overview</h3>
@@ -259,7 +259,7 @@ const Location = () => {
               </div>
             </div>
           )}
-        </div>
+        </motion.div>
 
 
       </motion.div>

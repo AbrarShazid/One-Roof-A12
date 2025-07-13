@@ -66,7 +66,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <MdOutlineLogin className="text-lg" />
-                  <span>Sign In</span>
+                  <NavLink to={'/auth'}>Sign In</NavLink>
                 </>
               )}
             </motion.button>
@@ -131,7 +131,7 @@ const Navbar = () => {
                 ) : (
                   <>
                     <MdOutlineLogin className="text-xl" />
-                    <span>Sign In</span>
+                    <NavLink to={'/auth'}>Sign In</NavLink>
                   </>
                 )}
               </button>
