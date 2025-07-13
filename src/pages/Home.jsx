@@ -6,7 +6,7 @@ import Location from '../Components/home/Location';
 
 const Home = () => {
   return (
-    <div >
+    <div  className=''>
     <Banner></Banner>
     <About></About>
     <Coupons></Coupons>
