@@ -51,7 +51,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start">
                 <span className="mr-2">📍</span>
-                <span>House no-65, Sector-6, Uttara</span>
+                <span>House no-04, Sector-6, Uttara</span>
               </li>
               <li className="flex items-center">
                 <span className="mr-2">📞</span>

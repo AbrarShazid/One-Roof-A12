@@ -19,9 +19,9 @@ const Navbar = () => {
       : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-3xl  transition-opacity";
 
   return (
-    <div className={`w-full text-[#F9F7F3] sticky top-0 z-50  bg-[#142921]  `}>
+    <div className={`w-full text-[#F9F7F3] sticky top-0 z-5000  bg-[#142921]  `}>
 
-      <div className="container  py-2 mx-auto">
+      <div className="container  py-2 px-[3%] xl:px-0 xl:mx-auto">
         <div className="flex justify-between items-center">
 
           <div className="flex items-center gap-3">
