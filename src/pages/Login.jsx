@@ -3,6 +3,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
+import useAuth from '../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const LogIn = () => {
   const {
@@ -11,37 +13,41 @@ const LogIn = () => {
     formState: { errors }
   } = useForm();
 
+  const {signIn,signInGoogle}=useAuth()
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogin = (data) => {
-    // const form = e.target
-    // const email = form.email.value
-    // const pass = form.password.value
-    // login(email, pass)
-    //   .then(res => {
-    //     toast.success("Log in Successful!");
-    //     e.target.reset()
-    //       navigate(`${location.state?location.state:"/"}`)
-    //       console.log(`${location.state}`);
-    //   })
-    //   .catch(err => {
-    //     toast.error(err.message);
-    //   })
+  const from=location.state?.from || '/'
 
-    console.log(data); // To verify submitted data (you can remove this)
+  const handleLogin = (data) => {
+ 
+    
+   
+    signIn(data.email, data.password)
+      .then(res => {
+        toast.success("Log in Successful!");
+       
+          navigate(from)
+         
+      })
+      .catch(err => {
+        toast.error(err.message);
+      })
+
+   
   };
 
-  // log in with google 
+
   const handleGoogleLogin = () => {
-    // signGoogle()
-    //   .then(res => {
-    //     toast.success("Login successful!");
-    //     navigate(`${location.state?location.state:"/"}`)
-    //   })
-    //   .catch(err => {
-    //     toast.error(err.message);
-    //   })
+    signInGoogle()
+      .then(res => {
+        toast.success("Login successful!");
+        navigate(from)
+      })
+      .catch(err => {
+        toast.error(err.message);
+      })
   };
 
   return (

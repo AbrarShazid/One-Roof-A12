@@ -3,6 +3,10 @@ import { Camera } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { FcGoogle } from 'react-icons/fc';
+import useAuth from '../hooks/useAuth';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { updateProfile } from 'firebase/auth';
 
 const Register = () => {
   const {
@@ -11,14 +15,49 @@ const Register = () => {
     formState: { errors }
   } = useForm();
 
-  const handleSignUp = (data) => {
-    console.log('Form data:', data);
-    console.log('Image file:', data.photo?.[0]);
-  };
+  const { createUser, signInGoogle } = useAuth()
+
+
+const handleSignUp = async (data) => {
+  const imageFile = data.photo[0];
+  const imgbbAPIKey = import.meta.env.VITE_imgBB;
+
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  try {
+    const imgRes = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, formData);
+    const imageUrl = imgRes.data.data.url;
+
+    const res = await createUser(data.email, data.password);
+
+    // ✅ Use updateProfile from Firebase, not res.user.updateProfile
+    await updateProfile(res.user, {
+      displayName: data.name,
+      photoURL: imageUrl
+    });
+
+    toast.success("Sign Up Successful!");
+  } catch (err) {
+    toast.error(err.message || "Something went wrong");
+    console.error("Error:", err);
+  }
+};
+
 
   const handleGoogleLogin = () => {
-    // Google login implementation
+    signInGoogle()
+      .then(res => {
+        toast.success("Sign Up successful!");
+
+      })
+      .catch(err => {
+        toast.error(err.message);
+      })
   };
+
+
+
 
   return (
     <motion.div
@@ -113,6 +152,7 @@ const Register = () => {
                     Photo
                   </label>
                   <input
+
                     type="file"
                     accept="image/*"
                     {...register("photo", { required: "Photo is required" })}
