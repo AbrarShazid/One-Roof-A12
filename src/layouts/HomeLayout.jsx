@@ -7,6 +7,7 @@ import { AnimatePresence } from 'framer-motion';
 
 
 
+
 const HomeLayout = () => {
 
   const location = useLocation();
