@@ -7,8 +7,11 @@ import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { updateProfile } from 'firebase/auth';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router';
 
 const Register = () => {
+  const navigate=useNavigate()
   const {
     register,
     handleSubmit,
@@ -17,43 +20,67 @@ const Register = () => {
 
   const { createUser, signInGoogle } = useAuth()
 
+  const axiosSecure =useAxiosSecure()
 
-const handleSignUp = async (data) => {
-  const imageFile = data.photo[0];
-  const imgbbAPIKey = import.meta.env.VITE_imgBB;
-
-  const formData = new FormData();
-  formData.append('image', imageFile);
-
-  try {
-    const imgRes = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, formData);
-    const imageUrl = imgRes.data.data.url;
-
-    const res = await createUser(data.email, data.password);
-
-    // ✅ Use updateProfile from Firebase, not res.user.updateProfile
-    await updateProfile(res.user, {
-      displayName: data.name,
-      photoURL: imageUrl
-    });
-
-    toast.success("Sign Up Successful!");
-  } catch (err) {
-    toast.error(err.message || "Something went wrong");
-    console.error("Error:", err);
-  }
-};
+  const handleSignUp = async (data) => {
+    const imageFile = data.photo[0];
+    const imgbbAPIKey = import.meta.env.VITE_imgBB;
+  
+    const formData = new FormData();
+    formData.append('image', imageFile);
+  
+    try {
+      const imgRes = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, formData);
+      const imageUrl = imgRes.data.data.url;
+  
+      const res = await createUser(data.email, data.password);
+  
+      await updateProfile(res.user, {
+        displayName: data.name,
+        photoURL: imageUrl
+      });
+  
+      // ✅ Save to database
+      const userData = {
+        name: data.name,
+        email: data.email,
+        photo: imageUrl,
+        role: "user", 
+        createdAt: new Date()
+      };
+  
+      await axiosSecure.post("/api/users", userData);
+      navigate('/')
+  
+      toast.success("Sign Up Successful!");
+    } catch (err) {
+      toast.error(err.message || "Something went wrong");
+      console.error("Error:", err);
+    }
+  };
 
 
   const handleGoogleLogin = () => {
     signInGoogle()
-      .then(res => {
-        toast.success("Sign Up successful!");
+      .then(async (res) => {
+        const user = res.user;
+  
+        const userData = {
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          role: "user",
+          createdAt: new Date()
+        };
+  
+        await axiosSecure.post("/api/users", userData);
+        navigate('/')
 
+        toast.success("Sign Up successful!");
       })
-      .catch(err => {
+      .catch((err) => {
         toast.error(err.message);
-      })
+      });
   };
 
 

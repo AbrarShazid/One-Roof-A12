@@ -6,8 +6,6 @@ import Lenis from 'lenis';
 import { AnimatePresence } from 'framer-motion';
 
 
-
-
 const HomeLayout = () => {
 
   const location = useLocation();
