@@ -100,6 +100,10 @@ const Navbar = () => {
                         <div className="px-4 py-2 text-[#142921] border-b border-[#142921]/10">
                           <p className="font-medium">{user.displayName || 'User'}</p>
                         </div>
+                        
+                        <div className="px-4 py-2 text-[#142921] border-b border-[#142921]/10">
+                          <Link to={'/dashboard'} className='font-medium'>Dashboard</Link>
+                        </div>
                         <button
                           onClick={signOut}
                           className="w-full text-left px-4 py-2 text-[#142921] hover:bg-[#BED4D1]/50 flex items-center gap-2"
@@ -185,6 +189,28 @@ const Navbar = () => {
               >
                 Apartments
               </NavLink>
+
+            {
+              user && 
+              <NavLink
+                to="/dashboard"
+                className={`py-2 text-lg ${navItemClass}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard
+              </NavLink>
+            }
+             
+
+
+
+
+
+
+
+
+
+
 
               {
                 user &&

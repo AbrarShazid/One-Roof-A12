@@ -6,6 +6,8 @@ import AuthLayOut from "../layouts/AuthLayOut";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Error from "../pages/Error";
+import PrivateRoute from "../routes/PrivateRoute"
+import DashboardLayout from "../layouts/DashboardLayout"
 
 
 
@@ -41,6 +43,18 @@ export const router = createBrowserRouter([
       }
 
     ]
+
+  },
+
+
+  {
+    path: "/dashboard",
+    element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>
+  
+
+
+
+
 
   },
   {
