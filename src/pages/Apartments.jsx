@@ -1,10 +1,11 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
-import { FiFilter,  FiLayers, FiHome, FiHash } from "react-icons/fi";
+import { FiFilter, FiLayers, FiHome, FiHash } from "react-icons/fi";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import Loading from "../Components/Loading";
 
@@ -12,27 +13,28 @@ const Apartments = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [apartments, setApartments] = useState([]);
+  const queryClient = useQueryClient();
+  
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [minRent, setMinRent] = useState("");
   const [maxRent, setMaxRent] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchApartments = useCallback(async () => {
-    setIsLoading(true);
-    try {
+// fetch apartments 
+  const { data: apartmentsData, isLoading, isError } = useQuery({
+    queryKey: ['apartments', page, minRent, maxRent],
+    queryFn: async () => {
       const res = await axiosSecure.get("/apartments", {
         params: {
           page,
           minRent: minRent || 0,
           maxRent: maxRent || 999999,
-          
         },
       });
-      setApartments(res.data.apartments);
-      setTotalPages(res.data.totalPages);
-    } catch (error) {
+      return res.data;
+    },
+    keepPreviousData: true,
+    staleTime: 60000, // 1 minute
+    onError: (error) => {
       console.error("Error fetching apartments:", error);
       Swal.fire({
         icon: 'error',
@@ -40,43 +42,31 @@ const Apartments = () => {
         text: 'Failed to fetch apartments. Please try again later.',
         confirmButtonColor: '#142921'
       });
-    } finally {
-      setIsLoading(false);
     }
-  }, [axiosSecure, page, minRent, maxRent]);
+  });
 
-  const handleFilter = () => {
-    setPage(1);
-    fetchApartments();
-  };
+  const apartments = apartmentsData?.apartments || [];
+  const totalPages = apartmentsData?.totalPages || 1;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchApartments();
-    }, 500);
-  
-    return () => clearTimeout(timer);
-  }, [minRent, maxRent, fetchApartments]);
-
-  useEffect(() => {
-    fetchApartments();
-  }, [page, fetchApartments]);
-
-  const handleAgreement = async (apt) => {
-    if (!user) return navigate("/auth", { state: { from: "/apartments" } });
-    
-    const payload = {
-      userName: user.displayName,
-      userEmail: user.email,
-      floor: apt.floor,
-      block: apt.block,
-      apartmentNo: apt.apartmentNo,
-      rent: apt.rent,
-      status: 'pending',
-    };
-    
-    try {
+  // Create agreement 
+  const { mutate: createAgreement } = useMutation({
+    mutationFn: async (apt) => {
+      if (!user) return navigate("/auth", { state: { from: "/apartments" } });
+      
+      const payload = {
+        userName: user.displayName,
+        userEmail: user.email,
+        floor: apt.floor,
+        block: apt.block,
+        apartmentNo: apt.apartmentNo,
+        rent: apt.rent,
+        status: 'pending',
+      };
+      
       const res = await axiosSecure.post("/agreements", payload);
+      return res.data;
+    },
+    onSuccess: () => {
       Swal.fire({
         icon: 'success',
         title: 'Agreement Submitted!',
@@ -85,9 +75,9 @@ const Apartments = () => {
         timer: 3000,
         showConfirmButton: false
       });
-      
-      fetchApartments();
-    } catch (err) {
+      queryClient.invalidateQueries(['apartments']);
+    },
+    onError: (err) => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -95,6 +85,14 @@ const Apartments = () => {
         confirmButtonColor: '#142921'
       });
     }
+  });
+
+  const handleFilter = () => {
+    setPage(1);
+  };
+
+  const handleAgreement = (apt) => {
+    createAgreement(apt);
   };
 
   // Animation variants remain the same as previous version
@@ -109,7 +107,6 @@ const Apartments = () => {
       }
     }
   };
-
 
   const headerVariants = {
     hidden: { opacity: 0, y: -30 },
@@ -187,81 +184,75 @@ const Apartments = () => {
       </motion.div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Search and Filter Controls */}
-      
-
         {/* Filter Section */}
         <AnimatePresence>
-          
-            <motion.div 
-              className="mb-8 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <h2 className="text-2xl font-semibold text-[#142921] mb-6">Filter Apartments</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rent Range
-                  </label>
-                  <div className="flex gap-4">
-                    <div className="flex-1 relative">
-                      <input
-                        type="number"
-                        min="0"
-                        placeholder="Min rent"
-                        value={minRent}
-                        onChange={(e) => setMinRent(e.target.value)}
-                        className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#142921] focus:border-transparent transition-all duration-300"
-                      />
-                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <motion.div 
+            className="mb-8 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <h2 className="text-2xl font-semibold text-[#142921] mb-6">Filter Apartments</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Rent Range
+                </label>
+                <div className="flex gap-4">
+                  <div className="flex-1 relative">
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="Min rent"
+                      value={minRent}
+                      onChange={(e) => setMinRent(e.target.value)}
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#142921] focus:border-transparent transition-all duration-300"
+                    />
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                       <FaBangladeshiTakaSign />
-                      </div>
                     </div>
-                    <div className="flex-1 relative">
-                      <input
-                        type="number"
-                        min="0"
-                        placeholder="Max rent"
-                        value={maxRent}
-                        onChange={(e) => setMaxRent(e.target.value)}
-                        className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#142921] focus:border-transparent transition-all duration-300"
-                      />
-                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  </div>
+                  <div className="flex-1 relative">
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="Max rent"
+                      value={maxRent}
+                      onChange={(e) => setMaxRent(e.target.value)}
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#142921] focus:border-transparent transition-all duration-300"
+                    />
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                       <FaBangladeshiTakaSign />
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
-              <div className="mt-6 flex justify-end gap-3">
-              
-                <motion.button
-                  onClick={handleFilter}
-                  disabled={isLoading}
-                  className="bg-[#142921] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {isLoading ? (
-                    <motion.div 
-                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    />
-                  ) : (
-                    <>
-                      <FiFilter />
-                      Apply Filters
-                    </>
-                  )}
-                </motion.button>
-              </div>
-            </motion.div>
-         
+            </div>
+            
+            <div className="mt-6 flex justify-end gap-3">
+              <motion.button
+                onClick={handleFilter}
+                disabled={isLoading}
+                className="bg-[#142921] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {isLoading ? (
+                  <motion.div 
+                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  />
+                ) : (
+                  <>
+                    <FiFilter />
+                    Apply Filters
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </motion.div>
         </AnimatePresence>
 
         {/* Loading State */}
@@ -274,7 +265,7 @@ const Apartments = () => {
               animate="visible"
               exit="exit"
             >
-            <Loading></Loading>
+              <Loading></Loading>
             </motion.div>
           )}
         </AnimatePresence>
@@ -293,14 +284,13 @@ const Apartments = () => {
                 <motion.div
                   key={apt._id}
                   className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300"
-                  
                   whileHover="hover"
                   layout
                   layoutId={apt._id}
                 >
                   <div className="relative overflow-hidden h-48">
                     <motion.img
-                    loading="lazy"
+                      loading="lazy"
                       src={apt.image || '/default-apartment.jpg'}
                       alt={`Apartment ${apt.apartmentNo}`}
                       className="h-full w-full object-cover"
@@ -349,7 +339,6 @@ const Apartments = () => {
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                    
                       Submit Agreement
                     </motion.button>
                   </div>

@@ -8,6 +8,9 @@ import Register from "../pages/Register";
 import Error from "../pages/Error";
 import PrivateRoute from "../routes/PrivateRoute"
 import DashboardLayout from "../layouts/DashboardLayout"
+import DashboardHome from "../pages/dashboard/DashboardHome";
+import ProfilePage from "../pages/dashboard/ProfilePage";
+import Announcement from "../pages/dashboard/Announcement";
 
 
 
@@ -49,7 +52,28 @@ export const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>
+    element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+    children:[
+
+        {
+          index:true,
+          element:<DashboardHome></DashboardHome>
+        },
+        {
+          path:'profile',
+          element:<ProfilePage></ProfilePage>
+        },
+        {
+          path:"announcement",
+          element:<Announcement></Announcement>
+        }
+
+
+
+
+
+
+    ]
   
 
 
