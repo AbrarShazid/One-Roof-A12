@@ -7,7 +7,7 @@ import dummyPic from "../assets/dummy.webp"
 
 import { IoMdHome } from "react-icons/io";
 import { ImProfile } from "react-icons/im";
-import { MdOutlineRememberMe,MdOutlinePayment } from "react-icons/md";
+import { MdOutlineRememberMe, MdOutlinePayment } from "react-icons/md";
 import { GrAnnounce } from "react-icons/gr";
 import { FaReceipt } from "react-icons/fa6";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -15,9 +15,13 @@ import { RiCoupon2Fill } from "react-icons/ri";
 import { HiMiniDocumentCurrencyBangladeshi } from "react-icons/hi2";
 
 import useUserRole from '../hooks/useUserRole';
+import Lottie from 'lottie-react';
+
+
+import loadingAnimation from "../assets/small_loading.json"
 
 const DashboardLayout = () => {
-  const { role } = useUserRole()
+  const { role, roleLoading } = useUserRole()
   const { user } = useAuth()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
@@ -43,12 +47,22 @@ const DashboardLayout = () => {
     }
   };
 
+  if (roleLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Lottie animationData={loadingAnimation} className="w-24 h-24" />
+      </div>
+    );
+  }
+
+
+
   return (
     <div className="flex min-h-screen bg-[#e4edec] manrope">
       {/* Mobile Menu Button - now shows on tablets too */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-2 left-4 z-30 p-2 bg-[#142921] text-white rounded-md shadow-lg"
+        className="lg:hidden fixed top-2 left-4 z-300 p-2 bg-[#142921] text-white rounded-md shadow-lg"
       >
         {isSidebarOpen ? <HiX size={24} /> : <HiMenu size={24} />}
       </button>
@@ -123,7 +137,7 @@ const DashboardLayout = () => {
                 className={`flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start ${role === 'admin' && 'hidden'}`}
                 onClick={handleLinkClick}
               >
-                <HiMiniDocumentCurrencyBangladeshi  className="text-md" />
+                <HiMiniDocumentCurrencyBangladeshi className="text-md" />
                 <span className="text-sm lg:text-base">Payment History</span>
               </Link>
 
@@ -136,11 +150,6 @@ const DashboardLayout = () => {
 
           }
 
-
-
-
-
-
           <Link
             to="announcement"
             className={`flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start ${role === 'admin' && 'hidden'}`}
@@ -151,7 +160,11 @@ const DashboardLayout = () => {
           </Link>
 
           {/* all admin route */}
-          {role === 'admin' &&
+          {
+
+
+
+            role === 'admin' &&
             <>
               <Link
                 to="manage-members"
@@ -196,10 +209,10 @@ const DashboardLayout = () => {
       {/* Main content area */}
       <main className="w-full lg:ml-[20%] lg:w-4/5 min-h-screen">
         {/* Sticky top nav */}
-        <div className="sticky top-0 bg-[#e4edec] shadow-md z-10 px-4 lg:px-6 py-4 border-b border-[#c7d4d3]">
-          {role === 'admin' && <Link to={'/dashboard'} className="text-base lg:text-lg font-semibold text-[#142921] ml-12 lg:ml-0">Admin Dashboard</Link>}
-          {role === 'member' && <Link to={'/dashboard'} className="text-base lg:text-lg font-semibold text-[#142921] ml-12 lg:ml-0">Member Dashboard</Link>}
-          {role === 'user' && <Link to={'/dashboard'} className="text-base lg:text-lg font-semibold text-[#142921] ml-12 lg:ml-0">User Dashboard</Link>}
+        <div className="sticky top-0 bg-[#e4edec] shadow-md z-200 px-4 lg:px-6 py-4 border-b border-[#c7d4d3]">
+          {role === 'admin' && <Link to={'/dashboard'} className="text-base md:text-xl font-semibold text-[#142921] ml-12 lg:ml-0">Admin Dashboard</Link>}
+          {role === 'member' && <Link to={'/dashboard'} className="text-base md:text-xl font-semibold text-[#142921] ml-12 lg:ml-0">Member Dashboard</Link>}
+          {role === 'user' && <Link to={'/dashboard'} className="text-base md:text-xl font-semibold text-[#142921] ml-12 lg:ml-0">User Dashboard</Link>}
         </div>
 
         {/* Page content */}
