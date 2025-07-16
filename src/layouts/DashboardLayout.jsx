@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import useAuth from '../hooks/useAuth';
 import dummyPic from "../assets/dummy.webp"
-
 import { IoMdHome } from "react-icons/io";
 import { ImProfile } from "react-icons/im";
 import { MdOutlineRememberMe, MdOutlinePayment } from "react-icons/md";
@@ -15,10 +14,6 @@ import { RiCoupon2Fill } from "react-icons/ri";
 import { HiMiniDocumentCurrencyBangladeshi } from "react-icons/hi2";
 
 import useUserRole from '../hooks/useUserRole';
-import Lottie from 'lottie-react';
-
-
-import loadingAnimation from "../assets/small_loading.json"
 
 const DashboardLayout = () => {
   const { role, roleLoading } = useUserRole()
@@ -48,14 +43,8 @@ const DashboardLayout = () => {
   };
 
   if (roleLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Lottie animationData={loadingAnimation} className="w-24 h-24" />
-      </div>
-    );
+    return <div></div>
   }
-
-
 
   return (
     <div className="flex min-h-screen bg-[#e4edec] manrope">
@@ -66,7 +55,6 @@ const DashboardLayout = () => {
       >
         {isSidebarOpen ? <HiX size={24} /> : <HiMenu size={24} />}
       </button>
-
 
       {isSidebarOpen && (
         <div
@@ -108,7 +96,7 @@ const DashboardLayout = () => {
 
           <Link
             to="profile"
-            className='flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start'
+            className='flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start '
             onClick={handleLinkClick}
           >
             <ImProfile className="text-md" />
@@ -141,15 +129,9 @@ const DashboardLayout = () => {
                 <span className="text-sm lg:text-base">Payment History</span>
               </Link>
 
-
-
-
             </>
 
-
-
           }
-
           <Link
             to="announcement"
             className={`flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start ${role === 'admin' && 'hidden'}`}
@@ -161,9 +143,6 @@ const DashboardLayout = () => {
 
           {/* all admin route */}
           {
-
-
-
             role === 'admin' &&
             <>
               <Link
