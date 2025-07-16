@@ -11,6 +11,16 @@ import DashboardLayout from "../layouts/DashboardLayout"
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import ProfilePage from "../pages/dashboard/ProfilePage";
 import Announcement from "../pages/dashboard/Announcement";
+import Forbidden from "../pages/Forbidden";
+import AdminRoute from "../routes/AdminRoute";
+import MakeAnnouncement from "../pages/dashboard/admin/MakeAnnouncement";
+import ManageMembers from "../pages/dashboard/admin/ManageMembers"
+import AgreementReq from "../pages/dashboard/admin/AgreementReq"
+
+import ManageCoupon from "../pages/dashboard/admin/ManageCoupon"
+import MemberRoute from "../routes/MemberRoute";
+import MakePayment from "../pages/dashboard/member/MakePayment";
+import PaymentHistory from "../pages/dashboard/member/PaymentHistory";
 
 
 
@@ -33,16 +43,16 @@ export const router = createBrowserRouter([
   },
 
   {
-    path:"/auth",
-    element:<AuthLayOut></AuthLayOut>,
-    children:[
+    path: "/auth",
+    element: <AuthLayOut></AuthLayOut>,
+    children: [
       {
-        index:true,
-        element:<Login></Login>
+        index: true,
+        element: <Login></Login>
       },
       {
-        path:"register",
-        element:<Register></Register>
+        path: "register",
+        element: <Register></Register>
       }
 
     ]
@@ -52,21 +62,94 @@ export const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
-    children:[
+    element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+    children: [
 
-        {
-          index:true,
-          element:<DashboardHome></DashboardHome>
-        },
-        {
-          path:'profile',
-          element:<ProfilePage></ProfilePage>
-        },
-        {
-          path:"announcement",
-          element:<Announcement></Announcement>
-        }
+      {
+        index: true,
+        element: <DashboardHome></DashboardHome>
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage></ProfilePage>
+      },
+
+
+
+
+
+      // only member router  
+
+      {
+
+        path:"make-payment",
+        element:<MemberRoute> <MakePayment></MakePayment> </MemberRoute>
+      },
+
+      {
+        path:"pay-history",
+        element:<MemberRoute> <PaymentHistory></PaymentHistory>  </MemberRoute>
+
+      },
+
+
+
+
+
+
+
+
+      // announcement for both user and member  
+
+      {
+        path: "announcement",
+        element: <Announcement></Announcement>
+      },
+
+
+      // only admin router 
+      {
+        path: "manage-members",
+        element: <AdminRoute><ManageMembers></ManageMembers></AdminRoute>
+
+      },
+
+
+      {
+        path: 'make-announcement',
+        element: <AdminRoute>  <MakeAnnouncement></MakeAnnouncement>   </AdminRoute>
+      },
+      {
+        path: 'agreement-req',
+        element: <AdminRoute> <AgreementReq></AgreementReq> </AdminRoute>
+
+
+      },
+
+      {
+        path: 'manage-coupons',
+        element: <AdminRoute> <ManageCoupon></ManageCoupon>  </AdminRoute>
+
+      },
+
+
+
+
+
+
+
+
+      // forbidden page router  
+
+      {
+        path: 'forbidden',
+        element: <Forbidden></Forbidden>
+      }
+
+
+
+
+
 
 
 
@@ -74,7 +157,7 @@ export const router = createBrowserRouter([
 
 
     ]
-  
+
 
 
 
@@ -83,7 +166,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element:<Error></Error>
+    element: <Error></Error>
   }
 
 
