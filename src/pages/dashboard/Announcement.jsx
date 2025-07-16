@@ -73,12 +73,12 @@ const Announcement = () => {
               <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#142921] to-[#1e3a2e]"></div>
               <div className="pl-5">
                 <div className="flex justify-between items-start mb-1">
-                  <h2 className="text-xl font-semibold text-gray-800">{a.title}</h2>
+                  <h2 className="text-xl font-semibold text-gray-800  whitespace-pre-line">{a.title}</h2>
                   <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded-full">
                     {new Date(a.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-                <p className="text-gray-600 mb-3">{a.description}</p>
+                <p className="text-gray-600 mb-3 whitespace-pre-line">{a.description}</p>
                 <div className="text-xs text-gray-400">
                   Posted: {new Date(a.createdAt).toLocaleString()}
                 </div>

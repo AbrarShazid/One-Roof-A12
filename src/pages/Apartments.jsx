@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,19 +8,23 @@ import Swal from "sweetalert2";
 import { FiFilter, FiLayers, FiHome, FiHash } from "react-icons/fi";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import Loading from "../Components/Loading";
+import useUserRole from '../hooks/useUserRole';
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
+
 
 const Apartments = () => {
+  const { role } = useUserRole()
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  
+
   const [page, setPage] = useState(1);
   const [minRent, setMinRent] = useState("");
   const [maxRent, setMaxRent] = useState("");
 
-// fetch apartments 
-  const { data: apartmentsData, isLoading, isError } = useQuery({
+  // fetch apartments 
+  const { data: apartmentsData, isLoading, isError,refetch } = useQuery({
     queryKey: ['apartments', page, minRent, maxRent],
     queryFn: async () => {
       const res = await axiosSecure.get("/apartments", {
@@ -52,17 +56,18 @@ const Apartments = () => {
   const { mutate: createAgreement } = useMutation({
     mutationFn: async (apt) => {
       if (!user) return navigate("/auth", { state: { from: "/apartments" } });
-      
+
       const payload = {
         userName: user.displayName,
         userEmail: user.email,
+        userImg:user.photoURL ,
         floor: apt.floor,
         block: apt.block,
         apartmentNo: apt.apartmentNo,
         rent: apt.rent,
         status: 'pending',
       };
-      
+
       const res = await axiosSecure.post("/agreements", payload);
       return res.data;
     },
@@ -92,6 +97,17 @@ const Apartments = () => {
   };
 
   const handleAgreement = (apt) => {
+
+    if (role === 'admin') {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An admin can not book a apartment.',
+        confirmButtonColor: '#142921'
+      });
+
+    }
+
     createAgreement(apt);
   };
 
@@ -151,20 +167,43 @@ const Apartments = () => {
     }
   };
 
+if(isError){
   return (
-    <motion.div 
+    <div className="min-h-[70vh] flex flex-col items-center justify-center p-6">
+      <div className="max-w-md text-center bg-white rounded-xl p-8 shadow-md">
+        <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-red-100">
+          <MdOutlineReportGmailerrorred className="w-8 h-8 text-red-500" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">Unable to load apartments</h3>
+        <p className="text-gray-600 mb-6">We couldn't fetch the apartments. Please try again.</p>
+        <button
+          onClick={refetch}
+          className="px-6 py-2 bg-[#142921] text-white rounded-lg hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
+        >
+          Retry
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+  return (
+    <motion.div
       className="min-h-screen bg-gradient-to-br from-[#e5eeed] to-white"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       {/* Header */}
-      <motion.div 
+      <motion.div
         className="bg-[#142921] text-white py-16 px-4"
         variants={headerVariants}
       >
         <div className="max-w-6xl mx-auto text-center">
-          <motion.h1 
+          <motion.h1
             className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-[#e5eeed] bg-clip-text text-transparent"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -172,7 +211,7 @@ const Apartments = () => {
           >
             Find Your Perfect Apartment
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="text-lg md:text-xl opacity-90"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -186,7 +225,7 @@ const Apartments = () => {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Filter Section */}
         <AnimatePresence>
-          <motion.div 
+          <motion.div
             className="mb-8 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
             variants={containerVariants}
             initial="hidden"
@@ -229,7 +268,7 @@ const Apartments = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-6 flex justify-end gap-3">
               <motion.button
                 onClick={handleFilter}
@@ -239,7 +278,7 @@ const Apartments = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 {isLoading ? (
-                  <motion.div 
+                  <motion.div
                     className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -258,7 +297,7 @@ const Apartments = () => {
         {/* Loading State */}
         <AnimatePresence>
           {isLoading && (
-            <motion.div 
+            <motion.div
               className="flex justify-center items-center py-20"
               variants={loadingVariants}
               initial="hidden"
@@ -273,7 +312,7 @@ const Apartments = () => {
         {/* Apartments Grid */}
         <AnimatePresence mode="wait">
           {!isLoading && (
-            <motion.div 
+            <motion.div
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
               variants={containerVariants}
               initial="hidden"
@@ -297,7 +336,7 @@ const Apartments = () => {
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                     />
-                    <motion.div 
+                    <motion.div
                       className="absolute top-4 right-4 bg-[#142921] text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -307,7 +346,7 @@ const Apartments = () => {
                       <span>{apt.rent.toLocaleString()}</span>
                     </motion.div>
                   </div>
-                  
+
                   <div className="p-6">
                     <div className="space-y-4 mb-6">
                       <div className="flex items-center justify-between">
@@ -332,7 +371,7 @@ const Apartments = () => {
                         <span className="text-lg font-semibold text-[#142921]">{apt.apartmentNo}</span>
                       </div>
                     </div>
-                    
+
                     <motion.button
                       onClick={() => handleAgreement(apt)}
                       className="w-full bg-gradient-to-r from-[#142921] to-[#1a3429] text-white py-3 rounded-lg font-medium hover:from-[#1a3429] hover:to-[#142921] transition-all duration-300 flex items-center justify-center gap-2"
@@ -351,20 +390,20 @@ const Apartments = () => {
         {/* Empty State */}
         <AnimatePresence>
           {!isLoading && apartments.length === 0 && (
-            <motion.div 
+            <motion.div
               className="text-center py-20"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.5 }}
             >
-              <motion.div 
+              <motion.div
                 className="text-6xl mb-4"
-                animate={{ 
+                animate={{
                   rotate: [0, 10, -10, 0],
                   scale: [1, 1.1, 1]
                 }}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut"
@@ -372,7 +411,7 @@ const Apartments = () => {
               >
                 🏠
               </motion.div>
-              <motion.h3 
+              <motion.h3
                 className="text-2xl font-semibold text-gray-600 mb-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -380,13 +419,13 @@ const Apartments = () => {
               >
                 No Apartments Found
               </motion.h3>
-              <motion.p 
+              <motion.p
                 className="text-gray-500"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                Try adjusting your search or filter criteria 
+                Try adjusting your search or filter criteria
               </motion.p>
             </motion.div>
           )}
@@ -394,7 +433,7 @@ const Apartments = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <motion.div 
+          <motion.div
             className="mt-12 flex justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -410,7 +449,7 @@ const Apartments = () => {
               >
                 &lt;
               </motion.button>
-              
+
               {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
                 let pageNum;
                 if (totalPages <= 5) {
@@ -422,16 +461,15 @@ const Apartments = () => {
                 } else {
                   pageNum = page - 2 + i;
                 }
-                
+
                 return (
                   <motion.button
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                      page === pageNum
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${page === pageNum
                         ? "bg-[#142921] text-white shadow-md"
                         : "text-gray-600 hover:bg-gray-100"
-                    }`}
+                      }`}
                     variants={pageVariants}
                     initial="hidden"
                     animate="visible"
@@ -443,7 +481,7 @@ const Apartments = () => {
                   </motion.button>
                 );
               })}
-              
+
               <motion.button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
