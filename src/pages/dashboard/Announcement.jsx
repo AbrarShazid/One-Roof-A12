@@ -78,7 +78,7 @@ const Announcement = () => {
                     {new Date(a.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-                <p className="text-gray-600 mb-3 whitespace-pre-line">{a.description}</p>
+                <p className="text-gray-600 mb-3 whitespace-pre-line ">{a.description}</p>
                 <div className="text-xs text-gray-400">
                   Posted: {new Date(a.createdAt).toLocaleString()}
                 </div>
