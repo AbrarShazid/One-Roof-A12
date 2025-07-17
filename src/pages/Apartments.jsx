@@ -8,23 +8,19 @@ import Swal from "sweetalert2";
 import { FiFilter, FiLayers, FiHome, FiHash } from "react-icons/fi";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import Loading from "../Components/Loading";
-import useUserRole from '../hooks/useUserRole';
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 
-
 const Apartments = () => {
-  const { role } = useUserRole()
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
   const [page, setPage] = useState(1);
   const [minRent, setMinRent] = useState("");
   const [maxRent, setMaxRent] = useState("");
 
   // fetch apartments 
-  const { data: apartmentsData, isLoading, isError,refetch } = useQuery({
+  const { data: apartmentsData, isLoading, isError, refetch } = useQuery({
     queryKey: ['apartments', page, minRent, maxRent],
     queryFn: async () => {
       const res = await axiosSecure.get("/apartments", {
@@ -61,11 +57,10 @@ const Apartments = () => {
         navigate("/auth", { state: { from: "/apartments" } });
         throw new Error("User not authenticated");
       }
-
       const payload = {
         userName: user.displayName,
         userEmail: user.email,
-        userImg:user.photoURL ,
+        userImg: user.photoURL,
         floor: apt.floor,
         block: apt.block,
         apartmentNo: apt.apartmentNo,
@@ -104,21 +99,10 @@ const Apartments = () => {
   };
 
   const handleAgreement = (apt) => {
-
-    if (role === 'admin') {
-      return Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'An admin can not book a apartment.',
-        confirmButtonColor: '#142921'
-      });
-
-    }
-
     createAgreement(apt);
   };
 
-  // Animation variants remain the same as previous version
+  // animation variants 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -174,25 +158,25 @@ const Apartments = () => {
     }
   };
 
-if(isError){
-  return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center p-6">
-      <div className="max-w-md text-center bg-white rounded-xl p-8 shadow-md">
-        <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-red-100">
-          <MdOutlineReportGmailerrorred className="w-8 h-8 text-red-500" />
+  if (isError) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6">
+        <div className="max-w-md text-center bg-white rounded-xl p-8 shadow-md">
+          <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-red-100">
+            <MdOutlineReportGmailerrorred className="w-8 h-8 text-red-500" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">Unable to load apartments</h3>
+          <p className="text-gray-600 mb-6">We couldn't fetch the apartments. Please try again.</p>
+          <button
+            onClick={refetch}
+            className="px-6 py-2 bg-[#142921] text-white rounded-lg hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
+          >
+            Retry
+          </button>
         </div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-2">Unable to load apartments</h3>
-        <p className="text-gray-600 mb-6">We couldn't fetch the apartments. Please try again.</p>
-        <button
-          onClick={refetch}
-          className="px-6 py-2 bg-[#142921] text-white rounded-lg hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
-        >
-          Retry
-        </button>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 
 
@@ -474,8 +458,8 @@ if(isError){
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
                     className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${page === pageNum
-                        ? "bg-[#142921] text-white shadow-md"
-                        : "text-gray-600 hover:bg-gray-100"
+                      ? "bg-[#142921] text-white shadow-md"
+                      : "text-gray-600 hover:bg-gray-100"
                       }`}
                     variants={pageVariants}
                     initial="hidden"
