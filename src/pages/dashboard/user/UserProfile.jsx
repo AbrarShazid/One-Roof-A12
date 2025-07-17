@@ -2,12 +2,12 @@ import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { MdEmail } from "react-icons/md";
 import { PiBuildingApartmentFill } from "react-icons/pi";
+import dummyImg from "../../../assets/dummy.webp"
 
 
 const UserProfile = () => {
   const { user } = useAuth();
 
-  const dummyImg = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
 
   return (
     <div className=" py-4 px-2">

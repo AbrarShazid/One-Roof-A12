@@ -55,7 +55,12 @@ const Apartments = () => {
   // Create agreement 
   const { mutate: createAgreement } = useMutation({
     mutationFn: async (apt) => {
-      if (!user) return navigate("/auth", { state: { from: "/apartments" } });
+
+      if (!user) {
+        // just navigating unauthenticated person is not enough need to stop mutation as well  
+        navigate("/auth", { state: { from: "/apartments" } });
+        throw new Error("User not authenticated");
+      }
 
       const payload = {
         userName: user.displayName,
@@ -83,6 +88,8 @@ const Apartments = () => {
       queryClient.invalidateQueries(['apartments']);
     },
     onError: (err) => {
+      if (err.message === "User not authenticated") return; // as we don't want to show error swal for un authenticated person
+
       Swal.fire({
         icon: 'error',
         title: 'Error!',
