@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import Lottie from 'lottie-react';
 import loadingAnimation from "../../../assets/small_loading.json"
 import { MdOutlineReportGmailerrorred } from 'react-icons/md';
+import { motion } from 'framer-motion';
 
 const ManageMembers = () => {
   const axiosSecure = useAxiosSecure();
@@ -80,20 +81,26 @@ const ManageMembers = () => {
 
   if (isError) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6">
-        <div className="max-w-md text-center bg-white rounded-xl p-8 shadow-md">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 ">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md text-center bg-white rounded-xl p-8 shadow-lg border border-gray-100"
+        >
           <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-red-100">
             <MdOutlineReportGmailerrorred className="w-8 h-8 text-red-500" />
           </div>
           <h3 className="text-xl font-semibold text-gray-800 mb-2">Unable to load members!</h3>
           <p className="text-gray-600 mb-6">We couldn't fetch the members. Please try again.</p>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={refetch}
             className="px-6 py-2 bg-[#142921] text-white rounded-lg hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
           >
             Retry
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     );
   }
