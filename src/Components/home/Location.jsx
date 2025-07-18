@@ -83,11 +83,11 @@ const Location = () => {
   ];
 
   return (
-    <div className="py-6 md:py-16 bg-[#bed4d1]/40 px-3 md:px-[3%] manrope ">
+    <div className=" py-4 md:py-8 bg-[#bed4d1]/40 px-3 md:px-[3%] manrope ">
       <motion.div variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }} className=" mx-auto py-12">
+        viewport={{ once: true, amount: 0.3 }} className=" mx-auto  container">
         {/* Header */}
         <div className="text-center mb-12">
           <motion.div variants={itemVariants} className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-[#bed4d1] to-[#142921] rounded-full mb-6">

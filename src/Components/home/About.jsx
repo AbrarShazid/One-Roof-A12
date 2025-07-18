@@ -77,7 +77,7 @@ const About = () => {
 
           <motion.h2
             variants={itemVariants}
-            className="text-3xl md:text-5xl lg:text-7xl font-bold text-[#142921] mb-4 tracking-tight"
+            className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#142921] mb-4 tracking-tight"
           >
             About{' '}
             <span className="bg-[#142921]  bg-clip-text text-transparent">
@@ -92,7 +92,7 @@ const About = () => {
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-8 md:mb-16 lg:mb-20">
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-8 md:mb-16 lg:mb-20 ">
           {/* Image Section */}
           <motion.div
             variants={imageVariants}
