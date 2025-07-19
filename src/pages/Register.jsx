@@ -73,7 +73,7 @@ const Register = () => {
           createdAt: new Date()
         };
   
-        await axiosSecure.post("/api/users", userData);
+        await axiosSecure.post("/users", userData);
         navigate('/')
 
         toast.success("Sign Up successful!");

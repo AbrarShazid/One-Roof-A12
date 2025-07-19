@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 const LogIn = () => {
   const {
@@ -12,6 +13,7 @@ const LogIn = () => {
     handleSubmit,
     formState: { errors }
   } = useForm();
+  const axiosSecure =useAxiosSecure()
 
   const {signIn,signInGoogle}=useAuth()
 
@@ -39,15 +41,28 @@ const LogIn = () => {
   };
 
 
+
   const handleGoogleLogin = () => {
     signInGoogle()
-      .then(res => {
-        toast.success("Login successful!");
+      .then(async (res) => {
+        const user = res.user;
+  
+        const userData = {
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          role: "user",
+          createdAt: new Date()
+        };
+  
+        await axiosSecure.post("/users", userData);
         navigate(from)
+
+        toast.success("Sign Up successful!");
       })
-      .catch(err => {
+      .catch((err) => {
         toast.error(err.message);
-      })
+      });
   };
 
   return (

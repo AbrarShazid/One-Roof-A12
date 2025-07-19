@@ -28,7 +28,7 @@ const MemberProfile = () => {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center">
         <Lottie animationData={loadingAnimation} className="w-28 h-28" />
-        <p className=" text-gray-600 ">Loading userdata...</p>
+        <p className=" text-gray-600 ">Loading announcements...</p>
       </div>
     );
   }

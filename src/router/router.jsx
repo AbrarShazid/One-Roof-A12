@@ -21,6 +21,7 @@ import ManageCoupon from "../pages/dashboard/admin/ManageCoupon"
 import MemberRoute from "../routes/MemberRoute";
 import MakePayment from "../pages/dashboard/member/MakePayment";
 import PaymentHistory from "../pages/dashboard/member/PaymentHistory";
+import Payment from "../pages/dashboard/member/Payment";
 
 
 
@@ -84,6 +85,14 @@ export const router = createBrowserRouter([
 
         path:"make-payment",
         element:<MemberRoute> <MakePayment></MakePayment> </MemberRoute>
+      },
+
+      { 
+
+        path:'payment',
+        element:<MemberRoute><Payment></Payment></MemberRoute>
+
+
       },
 
       {
