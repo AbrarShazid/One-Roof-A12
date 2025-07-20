@@ -351,7 +351,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "forbidden",
+    path: "/forbidden",
     element: (
       <Suspense fallback={<Loading />}>
         <Forbidden />
