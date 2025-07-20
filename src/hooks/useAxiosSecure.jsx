@@ -93,7 +93,6 @@ const useAxiosSecure = () => {
           return Promise.reject(err);
         }
       );
-
       // Cleanup to prevent multiple interceptors on re-renders
       return () => {
         axiosInstance.interceptors.request.eject(requestInterceptor);
