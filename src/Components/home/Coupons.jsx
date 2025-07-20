@@ -15,6 +15,8 @@ const Coupons = () => {
     queryKey: ['home-coupons'],
     queryFn: async () => {
       const res = await axiosSecure.get('/coupons');
+      console.log(res.data);
+      
       return res.data;
     },
   });
