@@ -53,7 +53,7 @@ const Apartments = () => {
     mutationFn: async (apt) => {
 
       if (!user) {
-        // just navigating unauthenticated person is not enough need to stop mutation as well  
+        // just navigating unauthenticated person 
         navigate("/auth", { state: { from: "/apartments" } });
         throw new Error("User not authenticated");
       }
