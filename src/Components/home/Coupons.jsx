@@ -121,7 +121,7 @@ const Coupons = () => {
                       <h3 className={`text-xl font-bold ${
                         coupon.isAvailable ? 'text-[#1a3a32]' : 'text-gray-500'
                       }`}>
-                        {coupon.title || 'Special Offer'}
+                        {'Special Offer'}
                       </h3>
                       <p className={`text-sm mt-1 ${
                         coupon.isAvailable ? 'text-gray-600' : 'text-gray-400'
