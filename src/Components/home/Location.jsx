@@ -83,7 +83,7 @@ const Location = () => {
   ];
 
   return (
-    <div className=" py-4 md:py-8 bg-[#bed4d1]/40 px-3 md:px-[3%] manrope ">
+    <div id='findUs' className=" py-4 md:py-8 bg-[#bed4d1]/40 px-3 md:px-[3%] manrope ">
       <motion.div variants={containerVariants}
         initial="hidden"
         whileInView="visible"

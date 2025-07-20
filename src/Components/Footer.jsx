@@ -1,9 +1,9 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 const Footer = () => {
-  const navItemClass = ({ isActive }) => 
+  const navItemClass = ({ isActive }) =>
     isActive
       ? "border-b-2 border-[#F9F7F3] font-semibold"
       : "hover:opacity-80 transition-opacity text-sm";
@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-bold">One Roof</h3>
             <p className="text-sm">
-            Elevated living, simplified - all under One Roof
+              Elevated living, simplified - all under One Roof
             </p>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com" target='_blank' rel="noopener noreferrer" aria-label="Facebook" className="hover:opacity-80 transition-opacity">
@@ -38,10 +38,14 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Quick Links</h3>
             <ul className="space-y-2">
-              <li><NavLink to="/" className={navItemClass}>Home</NavLink></li>
-              <li><NavLink to="/apartments" className={navItemClass}>Apartments</NavLink></li>
-              <li><a href="#" className="hover:opacity-80 transition-opacity text-sm">About Us</a></li>
-              <li><a href="#" className="hover:opacity-80 transition-opacity text-sm">Contact</a></li>
+              <li><Link to="/" className={navItemClass}>Home</Link></li>
+              <li><Link to="/apartments" className={navItemClass}>Apartments</Link></li>
+              <li>  <Link to="/#about" className="hover:opacity-80 transition-opacity text-sm">
+                About Us
+              </Link></li>
+              <li> <Link to="/#findUs" className="hover:opacity-80 transition-opacity text-sm">
+                Find Us
+              </Link></li>
             </ul>
           </div>
 
@@ -69,12 +73,12 @@ const Footer = () => {
             <h3 className="text-lg font-bold">Newsletter</h3>
             <p className="text-sm">Subscribe to get updates on new listings</p>
             <form className="flex flex-col space-y-3">
-              <input 
-                type="email" 
-                placeholder="Your email" 
+              <input
+                type="email"
+                placeholder="Your email"
                 className="px-4 py-2 rounded-lg text-sm bg-[#F9F7F3]/10 placeholder-[#F9F7F3]/70 focus:outline-none focus:ring-1 focus:ring-[#F9F7F3]"
               />
-              <button 
+              <button
                 type="submit"
                 className="px-4 py-2 rounded-lg text-sm font-medium bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90 transition-colors"
               >
