@@ -6,7 +6,8 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 import { FiFilter, FiLayers, FiHome, FiHash } from "react-icons/fi";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
+
+import { FiDollarSign } from "react-icons/fi";
 import Loading from "../Components/Loading";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 
@@ -240,7 +241,7 @@ const Apartments = () => {
                       className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#142921] focus:border-transparent transition-all duration-300"
                     />
                     <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <FaBangladeshiTakaSign />
+                      <FiDollarSign />
                     </div>
                   </div>
                   <div className="flex-1 relative">
@@ -253,7 +254,7 @@ const Apartments = () => {
                       className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#142921] focus:border-transparent transition-all duration-300"
                     />
                     <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <FaBangladeshiTakaSign />
+                      <FiDollarSign />
                     </div>
                   </div>
                 </div>
@@ -333,7 +334,7 @@ const Apartments = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <FaBangladeshiTakaSign className="text-xs" />
+                      <FiDollarSign  className="text-xs" />
                       <span>{apt.rent.toLocaleString()}</span>
                     </motion.div>
                   </div>
