@@ -350,14 +350,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "forbidden",
-    element: (
-      <Suspense fallback={<Loading />}>
-        <Forbidden />
-      </Suspense>
-    ),
-  },
+  // {
+  //   path: "forbidden",
+  //   element: (
+  //     <Suspense fallback={<Loading />}>
+  //       <Forbidden />
+  //     </Suspense>
+  //   ),
+  // },
 
   {
     path: "*",
