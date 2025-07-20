@@ -27,9 +27,7 @@ const useAxiosSecure = () => {
   }, error => {
     const status = error.response?.status;
     if (status === 403) {
-      console.log(status);
-      
-      navigate('/forbidden')
+      navigate('/dashboard/forbidden')
     }
     else if (status === 401) {
       logOut()
