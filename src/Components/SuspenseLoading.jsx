@@ -5,7 +5,7 @@ import smallLoading from "../assets/small_loading.json"
 
 const SuspenseLoading = () => {
   return (
-    <div className='h-[100vh]'>
+    <div className='h-[100vh] bg-[#e4edec]'>
       <Lottie animationData={smallLoading} className='h-[33%]'></Lottie>
       
     </div>
