@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 import dummyPic from "../assets/dummy.webp"
 import { IoMdHome } from "react-icons/io";
 import { ImProfile } from "react-icons/im";
-import { MdOutlineRememberMe, MdOutlinePayment } from "react-icons/md";
+import { MdOutlineRememberMe, MdOutlinePayment,MdDashboardCustomize  } from "react-icons/md";
 import { GrAnnounce } from "react-icons/gr";
 import { FaReceipt } from "react-icons/fa6";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -95,6 +95,15 @@ const DashboardLayout = () => {
           </Link>
 
           <Link
+            to={'/dashboard'}
+            className='flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start'
+            onClick={handleLinkClick}
+          >
+            <MdDashboardCustomize  className='text-md'/>
+            <span className="text-sm lg:text-base">Dashboard</span>
+          </Link>
+
+          <Link
             to="profile"
             className='flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start '
             onClick={handleLinkClick}
@@ -111,7 +120,7 @@ const DashboardLayout = () => {
             <>
               <Link
                 to="make-payment"
-                className={`flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start ${role === 'admin' && 'hidden'}`}
+                className={`flex items-center gap-2 hover:bg-[#1e3a2e] p-2 rounded-md transition-colors w-full justify-center lg:justify-start `}
                 onClick={handleLinkClick}
               >
                 <MdOutlinePayment className="text-md" />

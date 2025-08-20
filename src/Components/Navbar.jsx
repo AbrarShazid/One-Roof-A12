@@ -31,10 +31,12 @@ const Navbar = () => {
 
 
 
-  const navItemClass = ({ isActive }) =>
-    isActive
+  const navItemClass = ({ isActive }) =>{
+     return  isActive
       ? "border-b-2 border-[#BED4D1] px-2 py-1 "
       : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-2xl  transition-opacity";
+  }
+  
 
   return (
     <div className={`w-full text-[#F9F7F3] sticky top-0 z-5000  bg-[#142921]  `}>
