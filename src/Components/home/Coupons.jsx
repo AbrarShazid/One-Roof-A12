@@ -86,7 +86,7 @@ const Coupons = () => {
             <FaGift className="mr-2" />
             <span className="text-sm font-medium tracking-wide">ALL COUPONS</span>
           </div>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#142921] mb-3">
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#142921] mb-3">
             Save More with Exclusive Offers
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-base">

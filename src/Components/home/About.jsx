@@ -77,7 +77,7 @@ const About = () => {
 
           <motion.h2
             variants={itemVariants}
-            className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#142921] mb-4 tracking-tight"
+            className="text-3xl lg:text-4xl font-bold text-[#142921] mb-3 tracking-tight"
           >
             About{' '}
             <span className="bg-[#142921]  bg-clip-text text-transparent">
@@ -167,7 +167,7 @@ const About = () => {
         >
           <motion.h3
             variants={itemVariants}
-            className="text-2xl md:text-3xl font-bold text-gray-900 text-center  mb-6 md:mb-12"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#142921] text-center  mb-6 md:mb-12"
           >
            Why choose us?
           </motion.h3>

@@ -5,6 +5,7 @@ import Coupons from '../Components/home/Coupons';
 import Location from '../Components/home/Location';
 import { motion } from 'framer-motion';
 import Newsletter from '../Components/home/Newsletter';
+import FaqHome from '../Components/home/FaqHome';
 
 const Home = () => {
   return (
@@ -18,7 +19,8 @@ const Home = () => {
     <About></About>
     <Coupons></Coupons>
     <Location></Location>
-
+    
+<FaqHome></FaqHome>
     <Newsletter></Newsletter>
     </motion.div>
   );
