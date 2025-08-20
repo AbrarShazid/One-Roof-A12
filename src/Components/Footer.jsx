@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className={`w-full bg-[#142921] text-[#F9F7F3] transition-colors duration-300`}>
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1 - About */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold">One Roof</h3>
@@ -16,7 +16,7 @@ const Footer = () => {
               Elevated living, simplified - all under One Roof
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com" target='_blank' rel="noopener noreferrer" aria-label="Facebook" className="hover:opacity-80 transition-opacity">
+              <a href="https://web.facebook.com/AbrarShazid.BD" target='_blank' rel="noopener noreferrer" aria-label="Facebook" className="hover:opacity-80 transition-opacity">
                 <FaFacebook className="w-5 h-5" />
               </a>
               <a href="https://www.x.com" target='_blank' rel="noopener noreferrer" aria-label="Twitter" className="hover:opacity-80 transition-opacity">
@@ -25,7 +25,7 @@ const Footer = () => {
               <a href="https://www.instagram.com" target='_blank' rel="noopener noreferrer" aria-label="Instagram" className="hover:opacity-80 transition-opacity">
                 <FaInstagram className="w-5 h-5" />
               </a>
-              <a href="https://www.linkedin.com" target='_blank' rel="noopener noreferrer" aria-label="LinkedIn" className="hover:opacity-80 transition-opacity">
+              <a href="https://linkedin.com/in/abrar-shazid" target='_blank' rel="noopener noreferrer" aria-label="LinkedIn" className="hover:opacity-80 transition-opacity">
                 <FaLinkedin className="w-5 h-5" />
               </a>
             </div>
@@ -34,7 +34,7 @@ const Footer = () => {
           {/* Column 2 - Quick Links */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Quick Links</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 ">
               <li>
                 <Link to="/" className='hover:border-b hover:border-white hover:opacity-80 transition-opacity text-sm' >Home</Link>
               </li>
@@ -69,24 +69,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4 - Newsletter */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">Newsletter</h3>
-            <p className="text-sm">Subscribe to get updates on new listings</p>
-            <form className="flex flex-col space-y-3">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="px-4 py-2 rounded-lg text-sm bg-[#F9F7F3]/10 placeholder-[#F9F7F3]/70 focus:outline-none focus:ring-1 focus:ring-[#F9F7F3]"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-[#F9F7F3] text-[#142921] hover:bg-[#F9F7F3]/90 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
+      
         </div>
 
         {/* Bottom Bar */}

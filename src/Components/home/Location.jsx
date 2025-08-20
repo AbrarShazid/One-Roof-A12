@@ -186,7 +186,7 @@ const Location = () => {
         </motion.div>
 
         {/* Content Sections */}
-        <motion.div variants={itemVariants} className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
           {activeTab === 'Overview' && (
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-gray-800 mb-6">Location Overview</h3>
