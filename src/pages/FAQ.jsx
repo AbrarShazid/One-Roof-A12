@@ -10,7 +10,7 @@ const FAQ = () => {
         {
           question: "How do I find and rent an apartment?",
           answer:
-            "Browse available apartments on our Apartments page, filter by your preferred rent range and location, then submit an agreement request. Once approved by our team, you'll become a member and can move in on your selected date."
+            "Browse available apartments on our Apartments page, filter by your preferred rent range , then submit an agreement request. Once approved by our team, you'll become a member and can move in on your selected apartment."
         },
         {
           question: "What documents do I need to rent an apartment?",

@@ -34,7 +34,7 @@ const Navbar = () => {
   const navItemClass = ({ isActive }) =>
     isActive
       ? "border-b-2 border-[#BED4D1] px-2 py-1 "
-      : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-3xl  transition-opacity";
+      : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-2xl  transition-opacity";
 
   return (
     <div className={`w-full text-[#F9F7F3] sticky top-0 z-5000  bg-[#142921]  `}>
@@ -66,6 +66,13 @@ const Navbar = () => {
               <NavLink to="/" className={navItemClass}>Home</NavLink>
               <NavLink to="/apartments" className={navItemClass}>Apartments</NavLink>
               <NavLink to="/faq" className={navItemClass}>FAQ</NavLink>
+              {
+                user?<>
+                   <NavLink to="/dashboard/profile" className={navItemClass}>Profile</NavLink>
+                    <NavLink to="/dashboard" className={navItemClass}>Dashboard</NavLink>
+
+                </>:<></>
+              }
             </div>
           </div>
 
@@ -189,6 +196,14 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Apartments
+              </NavLink>
+
+              <NavLink
+                to="/faq"
+                className={`py-2 text-lg ${navItemClass}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                FAQ
               </NavLink>
 
             {
