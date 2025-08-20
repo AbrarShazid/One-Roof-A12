@@ -34,7 +34,7 @@ const Navbar = () => {
   const navItemClass = ({ isActive }) =>{
      return  isActive
       ? "border-b-2 border-[#BED4D1] px-2 py-1 "
-      : "hover:bg-[#BED4D1]/20 px-2 py-1 hover:rounded-2xl  transition-opacity";
+      : "hover:bg-[#BED4D1]/20 px-2.5 py-1 hover:rounded-2xl  transition-opacity";
   }
   
 

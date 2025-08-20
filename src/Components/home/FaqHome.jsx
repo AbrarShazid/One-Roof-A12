@@ -31,7 +31,7 @@ const FaqHome = () => {
   };
 
   const handleSeeMore = () => {
-    // Navigate to the full FAQ page
+
     navigate('/faq');
   };
 

@@ -59,11 +59,8 @@ const About = () => {
   };
 
   return (
-    <section id='about' className="py-6 md:py-16 bg-[#e4edec] md:px-[3%] relative overflow-hidden  manrope ">
-      {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#142921]/90 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-30" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#bed4d1]/80 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl opacity-30" />
-
+    <section id='about' className="py-6 md:py-16 bg-[#e4edec] md:px-[3%]  overflow-hidden  manrope ">
+    
       <div className="container mx-auto px-3 md:px-0 relative z-10 ">
         {/* Header Section */}
         <motion.div

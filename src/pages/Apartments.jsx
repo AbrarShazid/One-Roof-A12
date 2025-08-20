@@ -5,9 +5,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
-import { FiFilter, FiLayers, FiHome, FiHash } from "react-icons/fi";
+import { FiFilter, FiLayers, FiHome, FiHash,FiDollarSign } from "react-icons/fi";
 
-import { FiDollarSign } from "react-icons/fi";
+
 import Loading from "../Components/Loading";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 
