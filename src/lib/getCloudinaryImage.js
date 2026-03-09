@@ -7,12 +7,3 @@ export function getCloudinaryImage(url, width=400) {
   );
 }
 
-
-// export function getCloudinaryImage(url, width = 500) {
-//   if (!url) return "";
-
-//   const parts = url.split("/upload/");
-//   if (parts.length !== 2) return url;
-
-//   return `${parts[0]}/upload/f_auto,q_auto,dpr_auto,w_${width}/${parts[1]}`;
-// }
