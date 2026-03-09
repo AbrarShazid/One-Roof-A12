@@ -3,6 +3,7 @@ import useAuth from '../../../hooks/useAuth';
 import { MdEmail } from "react-icons/md";
 import { PiBuildingApartmentFill } from "react-icons/pi";
 import dummyImg from "../../../assets/dummy.webp"
+import { getCloudinaryImage } from '../../../lib/getCloudinaryImage';
 
 
 const UserProfile = () => {
@@ -20,7 +21,8 @@ const UserProfile = () => {
               {/* Profile Image */}
               <div className="flex justify-center lg:justify-start mb-6 lg:mb-0">
                 <img
-                  src={user?.photoURL || dummyImg}
+                src={getCloudinaryImage(user.photoURL, 400) || dummyImg}
+            
                   alt="Profile"
                   className="h-32 w-32 rounded-2xl object-cover border-4 border-white shadow-lg"
                 />

@@ -1,57 +1,54 @@
-import React from 'react';
-import { Camera } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
-import { FcGoogle } from 'react-icons/fc';
-import useAuth from '../hooks/useAuth';
-import toast from 'react-hot-toast';
-import axios from 'axios';
-import { updateProfile } from 'firebase/auth';
-import useAxiosSecure from '../hooks/useAxiosSecure';
-import { useNavigate } from 'react-router';
+import React from "react";
+import { Camera } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { updateProfile } from "firebase/auth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useNavigate } from "react-router";
+import { uploadCloudinary } from "../lib/uploadCloudinary";
 
 const Register = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm();
 
-  const { createUser, signInGoogle } = useAuth()
+  const { createUser, signInGoogle } = useAuth();
 
-  const axiosSecure =useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   const handleSignUp = async (data) => {
-    const imageFile = data.photo[0];
-    const imgbbAPIKey = import.meta.env.VITE_imgBB;
-  
-    const formData = new FormData();
-    formData.append('image', imageFile);
-  
+ 
+
     try {
-      const imgRes = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, formData);
-      const imageUrl = imgRes.data.data.url;
-  
+         const imageFile = data.photo[0];
+      const imageUrl = await uploadCloudinary(imageFile);
+
       const res = await createUser(data.email, data.password);
-  
+
       await updateProfile(res.user, {
         displayName: data.name,
-        photoURL: imageUrl
+        photoURL: imageUrl,
       });
-  
+
       // ✅ Save to database
       const userData = {
         name: data.name,
         email: data.email,
         photo: imageUrl,
-        role: "user", 
-        createdAt: new Date()
+        role: "user",
+        createdAt: new Date(),
       };
-  
+
       await axiosSecure.post("/users", userData);
-      navigate('/')
-  
+      navigate("/");
+
       toast.success("Sign Up Successful!");
     } catch (err) {
       toast.error(err.message || "Something went wrong");
@@ -59,22 +56,21 @@ const Register = () => {
     }
   };
 
-
   const handleGoogleLogin = () => {
     signInGoogle()
       .then(async (res) => {
         const user = res.user;
-  
+
         const userData = {
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
           role: "user",
-          createdAt: new Date()
+          createdAt: new Date(),
         };
-  
+
         await axiosSecure.post("/users", userData);
-        navigate('/')
+        navigate("/");
 
         toast.success("Sign Up successful!");
       })
@@ -83,16 +79,13 @@ const Register = () => {
       });
   };
 
-
-
-
   return (
     <motion.div
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -50 }}
       transition={{ duration: 0.5 }}
-      className='min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden'
+      className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden"
     >
       <section className="min-h-screen flex items-center justify-center relative p-4">
         <motion.div
@@ -135,11 +128,13 @@ const Register = () => {
                   <input
                     type="text"
                     {...register("name", { required: "Name is required" })}
-                    className="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#142921]"
+                    className="w-full px-4 py-3  border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#142921] text-[#142921]"
                     placeholder="Enter your name"
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.name.message}
+                    </p>
                   )}
                 </motion.div>
 
@@ -158,14 +153,16 @@ const Register = () => {
                       required: "Email is required",
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address"
-                      }
+                        message: "Invalid email address",
+                      },
                     })}
-                    className="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#142921]"
+                    className="w-full px-4 py-3  border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#142921] text-[#142921]"
                     placeholder="Enter your email"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
                   )}
                 </motion.div>
 
@@ -179,14 +176,15 @@ const Register = () => {
                     Photo
                   </label>
                   <input
-
                     type="file"
                     accept="image/*"
                     {...register("photo", { required: "Photo is required" })}
-                    className="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl text-sm text-gray-700 cursor-pointer file:cursor-pointer file:border-0 file:mr-4 file:bg-[#142921] file:text-white file:rounded file:px-4 file:py-2"
+                    className="w-full px-4 py-3  border border-gray-200 rounded-xl text-sm text-gray-700 cursor-pointer file:cursor-pointer file:border-0 file:mr-4 file:bg-[#142921] file:text-white file:rounded file:px-4 file:py-2"
                   />
                   {errors.photo && (
-                    <p className="text-red-500 text-sm mt-1">{errors.photo.message}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.photo.message}
+                    </p>
                   )}
                 </motion.div>
 
@@ -205,20 +203,24 @@ const Register = () => {
                       required: "Password is required",
                       minLength: {
                         value: 6,
-                        message: "Must be at least 6 characters"
+                        message: "Must be at least 6 characters",
                       },
                       validate: {
                         hasUppercase: (value) =>
-                          /[A-Z]/.test(value) || "Must contain an uppercase letter",
+                          /[A-Z]/.test(value) ||
+                          "Must contain an uppercase letter",
                         hasLowercase: (value) =>
-                          /[a-z]/.test(value) || "Must contain a lowercase letter"
-                      }
+                          /[a-z]/.test(value) ||
+                          "Must contain a lowercase letter",
+                      },
                     })}
-                    className="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#142921]"
+                    className="w-full px-4 py-3  border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#142921] text-[#142921]"
                     placeholder="Enter your password"
                   />
                   {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password.message}
+                    </p>
                   )}
                 </motion.div>
 
@@ -229,7 +231,10 @@ const Register = () => {
                   className="text-sm text-gray-600 text-right"
                 >
                   Have an account?{" "}
-                  <a href="/auth" className="text-[#142921] font-semibold underline">
+                  <a
+                    href="/auth"
+                    className="text-[#142921] font-semibold underline"
+                  >
                     Log In
                   </a>
                 </motion.div>
@@ -269,7 +274,7 @@ const Register = () => {
                   className="w-full flex items-center justify-center gap-3 py-3 bg-white/70 border border-gray-200 rounded-xl hover:bg-white/90 hover:border-gray-300"
                 >
                   <FcGoogle size={20} />
-                  <span>Sign up with Google</span>
+                  <span className="text-[#142921]">Sign up with Google</span>
                 </motion.button>
               </form>
             </div>

@@ -1,18 +1,29 @@
-
-import useAxiosSecure from '../../hooks/useAxiosSecure';
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
-import { FiLayers, FiHome, FiHash, FiDollarSign, FiArrowRight } from "react-icons/fi";
+import {
+  FiLayers,
+  FiHome,
+  FiHash,
+  FiDollarSign,
+  FiArrowRight,
+} from "react-icons/fi";
 import { useNavigate } from "react-router";
 import Loading from "../../Components/Loading";
+import { getCloudinaryImage } from "../../lib/getCloudinaryImage";
 
 const FeatureApartments = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  
-  const { data: apartmentsData, isLoading, isError, refetch } = useQuery({
-    queryKey: ['featured-apartments'],
+
+  const {
+    data: apartmentsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["featured-apartments"],
     queryFn: async () => {
       const res = await axiosSecure.get("/apartments?limit=6");
       return res.data;
@@ -22,18 +33,18 @@ const FeatureApartments = () => {
     onError: (error) => {
       console.error("Error fetching apartments:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to fetch apartments. Please try again later.',
-        confirmButtonColor: '#142921'
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch apartments. Please try again later.",
+        confirmButtonColor: "#142921",
       });
-    }
+    },
   });
 
   const apartments = apartmentsData?.apartments || [];
 
   const handleShowAll = () => {
-    navigate('/apartments');
+    navigate("/apartments");
   };
 
   if (isLoading) {
@@ -45,14 +56,14 @@ const FeatureApartments = () => {
   }
 
   return (
-    <div className='pt-16 pb-6 bg-[#e4edec] manrope overflow-hidden relative'>
+    <div className="pt-16 pb-6 bg-[#e4edec] manrope overflow-hidden relative">
       {/* Background decorative elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-[#142921]/90 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-30" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#bed4d1]/80 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl opacity-30" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -63,7 +74,8 @@ const FeatureApartments = () => {
             Featured Apartments
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our premium selection of beautifully designed apartments with modern amenities
+            Discover our premium selection of beautifully designed apartments
+            with modern amenities
           </p>
         </motion.div>
 
@@ -78,13 +90,13 @@ const FeatureApartments = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
-              onClick={() => navigate('/apartments')}
+              onClick={() => navigate("/apartments")}
             >
               {/* Image Container */}
               <div className="relative overflow-hidden h-56">
                 <motion.img
                   loading="lazy"
-                  src={apt.image || '/default-apartment.jpg'}
+                  src={getCloudinaryImage(apt.image,600) || "/default-apartment.jpg"}
                   alt={`Apartment ${apt.apartmentNo}`}
                   className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -93,7 +105,7 @@ const FeatureApartments = () => {
                   <FiDollarSign className="text-xs" />
                   <span>{apt.rent.toLocaleString()}/mo</span>
                 </div>
-                
+
                 {/* Overlay on Hover */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
               </div>
@@ -104,7 +116,6 @@ const FeatureApartments = () => {
                   <h3 className="text-xl font-semibold text-[#142921] mb-2">
                     Apartment {apt.apartmentNo}
                   </h3>
-                  
                 </div>
 
                 <div className="space-y-3">
@@ -112,23 +123,29 @@ const FeatureApartments = () => {
                     <FiLayers className="text-[#142921] mr-3" />
                     <div>
                       <p className="text-xs text-gray-500">Floor</p>
-                      <p className="font-semibold text-[#142921]">{apt.floor}</p>
+                      <p className="font-semibold text-[#142921]">
+                        {apt.floor}
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                     <FiHome className="text-[#142921] mr-3" />
                     <div>
                       <p className="text-xs text-gray-500">Block</p>
-                      <p className="font-semibold text-[#142921]">{apt.block}</p>
+                      <p className="font-semibold text-[#142921]">
+                        {apt.block}
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center p-3 bg-gray-50 rounded-lg">
                     <FiHash className="text-[#142921] mr-3" />
                     <div>
                       <p className="text-xs text-gray-500">Unit No</p>
-                      <p className="font-semibold text-[#142921]">{apt.apartmentNo}</p>
+                      <p className="font-semibold text-[#142921]">
+                        {apt.apartmentNo}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -149,7 +166,7 @@ const FeatureApartments = () => {
 
         {/* Show More Button */}
         {apartments.length > 0 && (
-          <motion.div 
+          <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

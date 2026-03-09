@@ -1,49 +1,47 @@
-import React, { useState } from 'react';
-import logo from '../assets/logo.png';
-import { Link, NavLink } from 'react-router';
+import React, { useState } from "react";
+import logo from "../assets/logo.webp";
+import { Link, NavLink } from "react-router";
 import { MdOutlineLogin, MdOutlineLogout } from "react-icons/md";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
-import BlurText from '../BlurText/BlurText';
-import useAuth from '../hooks/useAuth';
-import toast from 'react-hot-toast';
-import spinner from "../assets/small_loading.json"
-import dummyProfile from "../assets/dummy.webp"
-import Lottie from 'lottie-react';
+import BlurText from "../BlurText/BlurText";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
+import spinner from "../assets/small_loading.json";
+import dummyProfile from "../assets/dummy.webp";
+import Lottie from "lottie-react";
+import { getCloudinaryImage } from "../lib/getCloudinaryImage";
 
 const Navbar = () => {
-  const { user, logOut, loading } = useAuth()
+  const { user, logOut, loading } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const signOut = () => {
     logOut()
-      .then(res => {
+      .then((res) => {
         toast.success("Log Out successful!");
-
       })
-      .catch(err => {
+      .catch((err) => {
         toast.error(err.message);
-      })
-  }
+      });
+  };
 
-
-
-
-  const navItemClass = ({ isActive }) =>{
-     return  isActive
+  const navItemClass = ({ isActive }) => {
+    return isActive
       ? "border-b-2 border-[#BED4D1] px-2 py-1 "
       : "hover:bg-[#BED4D1]/20 px-2.5 py-1 hover:rounded-2xl  transition-opacity";
-  }
-  
+  };
+
+  console.log(user);
 
   return (
-    <div className={`w-full text-[#F9F7F3] sticky top-0 z-5000  bg-[#142921]  `}>
-
+    <div
+      className={`w-full text-[#F9F7F3] sticky top-0 z-5000  bg-[#142921]  `}
+    >
       <div className="container  py-2 px-[3%] xl:px-0 xl:mx-auto">
         <div className="flex justify-between items-center">
-
           <div className="flex items-center gap-3">
             <img
               className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border border-[#F9F7F3]/30"
@@ -51,39 +49,47 @@ const Navbar = () => {
               alt="logo"
             />
 
-
             <BlurText
               text="One Roof"
               delay={150}
               animateBy="characters"
               direction="top"
-              className='text-xl lg:text-2xl font-bold '
-
+              className="text-xl lg:text-2xl font-bold "
             />
           </div>
 
           {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
-            <div className='flex gap-8 items-center'>
-              <NavLink to="/" className={navItemClass}>Home</NavLink>
-              <NavLink to="/apartments" className={navItemClass}>Apartments</NavLink>
-              <NavLink to="/faq" className={navItemClass}>FAQ</NavLink>
-              {
-                user?<>
-                   <NavLink to="/dashboard/profile" className={navItemClass}>Profile</NavLink>
-                    <NavLink to="/dashboard" className={navItemClass}>Dashboard</NavLink>
-
-                </>:<></>
-              }
+            <div className="flex gap-8 items-center">
+              <NavLink to="/" className={navItemClass}>
+                Home
+              </NavLink>
+              <NavLink to="/apartments" className={navItemClass}>
+                Apartments
+              </NavLink>
+              <NavLink to="/faq" className={navItemClass}>
+                FAQ
+              </NavLink>
+              {user ? (
+                <>
+                  <NavLink to="/dashboard/profile" className={navItemClass}>
+                    Profile
+                  </NavLink>
+                  <NavLink to="/dashboard" className={navItemClass}>
+                    Dashboard
+                  </NavLink>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
 
           {/* Right Side Buttons */}
 
-
-          <div className="hidden md:flex items-center" >
+          <div className="hidden md:flex items-center">
             {loading ? (
-              <Lottie animationData={spinner} className='h-10 lg:h-12 ' />
+              <Lottie animationData={spinner} className="h-10 lg:h-12 " />
             ) : user ? (
               <div className="relative">
                 <button
@@ -91,7 +97,7 @@ const Navbar = () => {
                   className="focus:outline-none"
                 >
                   <img
-                    src={user.photoURL || dummyProfile}
+                    src={getCloudinaryImage(user.photoURL, 400) || dummyProfile}
                     alt="User"
                     className="w-10 h-10 lg:w-12 lg:h-12 border border-white/30 object-cover px-0.5 py-0.5 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
                   />
@@ -108,11 +114,15 @@ const Navbar = () => {
                     >
                       <div className="py-1">
                         <div className="px-4 py-2 text-[#142921] border-b border-[#142921]/10">
-                          <p className="font-medium">{user.displayName || 'User'}</p>
+                          <p className="font-medium">
+                            {user.displayName || "User"}
+                          </p>
                         </div>
-                        
+
                         <div className="px-4 py-2 text-[#142921] border-b border-[#142921]/10">
-                          <Link to={'/dashboard'} className='font-medium'>Dashboard</Link>
+                          <Link to={"/dashboard"} className="font-medium">
+                            Dashboard
+                          </Link>
                         </div>
                         <button
                           onClick={signOut}
@@ -127,36 +137,14 @@ const Navbar = () => {
                 </AnimatePresence>
               </div>
             ) : (
-              <div className='px-3 py-1.5 rounded-lg bg-[#BED4D1] text-[#142921] hover:bg-[#BED4D1]/90 transition-colors'>
-                <NavLink to={'/auth'} className="flex items-center gap-2">
+              <div className="px-3 py-1.5 rounded-lg bg-[#BED4D1] text-[#142921] hover:bg-[#BED4D1]/90 transition-colors">
+                <NavLink to={"/auth"} className="flex items-center gap-2">
                   <MdOutlineLogin className="text-lg" />
                   <span>Sign In</span>
                 </NavLink>
               </div>
             )}
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
           {/* Mobile Menu Button */}
           <button
@@ -178,7 +166,7 @@ const Navbar = () => {
         {isMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
             className={`md:hidden overflow-hidden bg-[#142921] shadow-lg`}
@@ -208,81 +196,56 @@ const Navbar = () => {
                 FAQ
               </NavLink>
 
-            {
-              user && 
-              <NavLink
-                to="/dashboard"
-                className={`py-2 text-lg ${navItemClass}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Dashboard
-              </NavLink>
-            }
-             
+              {user && (
+                <NavLink
+                  to="/dashboard"
+                  className={`py-2 text-lg ${navItemClass}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </NavLink>
+              )}
 
-
-
-
-
-
-
-
-
-
-
-              {
-                user &&
+              {user && (
                 <NavLink
                   className={`py-1.5 text-lg ${navItemClass} flex  items-center gap-1.5 bg-[#bed4d1] text-[#142921] rounded-xl w-fit px-3`}
                   onClick={() => {
-                    setIsMenuOpen(false)
-                    signOut()
-
+                    setIsMenuOpen(false);
+                    signOut();
                   }}
                 >
                   <MdOutlineLogout className="text-xl" />
                   <span> Sign Out</span>
-
                 </NavLink>
-              }
-
+              )}
 
               <div className="border-t border-[#F9F7F3]/30 my-1"></div>
 
               <button
                 onClick={() => {
-
                   setIsMenuOpen(false);
                 }}
-                className={`flex items-center gap-3  text-lg w-full rounded-lg ${user ? 'text-[#F9F7F3] hover:bg-[#BED4D1]/10' : ' py-2 bg-[#BED4D1] text-[#142921] hover:bg-[#BED4D1]/90'} transition-colors px-3`}
+                className={`flex items-center gap-3  text-lg w-full rounded-lg ${user ? "text-[#F9F7F3] hover:bg-[#BED4D1]/10" : " py-2 bg-[#BED4D1] text-[#142921] hover:bg-[#BED4D1]/90"} transition-colors px-3`}
               >
-                {
-                  loading ? <Lottie animationData={spinner} className='h-10'></Lottie> :
-                    user ? (
-                      <>
-                        <img
-                          src={user.photoURL || dummyProfile}
-                          alt="User"
-                          className="w-12 h-12 rounded-full border border-white/30 object-cover"
-                        />
-                        <div>
-                          <p > Name: {user.displayName}</p>
-
-                        </div>
-
-
-                      </>
-                    ) : (
-                      <>
-                        <MdOutlineLogin className="text-xl" />
-                        <NavLink to={'/auth'}>Sign In</NavLink>
-                      </>
-                    )
-
-
-
-
-                }
+                {loading ? (
+                  <Lottie animationData={spinner} className="h-10"></Lottie>
+                ) : user ? (
+                  <>
+                    <img
+                  src={getCloudinaryImage(user.photoURL, 400) || dummyProfile}
+                      alt="User"
+                      className="w-12 h-12 rounded-full border border-white/30 object-cover"
+                    />
+                    <div>
+                      <p> Name: {user.displayName}</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <MdOutlineLogin className="text-xl" />
+                    <NavLink to={"/auth"}>Sign In</NavLink>
+                  </>
+                )}
               </button>
             </div>
           </motion.div>

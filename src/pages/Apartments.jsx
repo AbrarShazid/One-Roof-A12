@@ -5,11 +5,17 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
-import { FiFilter, FiLayers, FiHome, FiHash,FiDollarSign } from "react-icons/fi";
-
+import {
+  FiFilter,
+  FiLayers,
+  FiHome,
+  FiHash,
+  FiDollarSign,
+} from "react-icons/fi";
 
 import Loading from "../Components/Loading";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { getCloudinaryImage } from "../lib/getCloudinaryImage";
 
 const Apartments = () => {
   const axiosSecure = useAxiosSecure();
@@ -20,9 +26,14 @@ const Apartments = () => {
   const [minRent, setMinRent] = useState("");
   const [maxRent, setMaxRent] = useState("");
 
-  // fetch apartments 
-  const { data: apartmentsData, isLoading, isError, refetch } = useQuery({
-    queryKey: ['apartments', page, minRent, maxRent],
+  // fetch apartments
+  const {
+    data: apartmentsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["apartments", page, minRent, maxRent],
     queryFn: async () => {
       const res = await axiosSecure.get("/apartments", {
         params: {
@@ -38,23 +49,22 @@ const Apartments = () => {
     onError: (error) => {
       console.error("Error fetching apartments:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to fetch apartments. Please try again later.',
-        confirmButtonColor: '#142921'
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch apartments. Please try again later.",
+        confirmButtonColor: "#142921",
       });
-    }
+    },
   });
 
   const apartments = apartmentsData?.apartments || [];
   const totalPages = apartmentsData?.totalPages || 1;
 
-  // Create agreement 
+  // Create agreement
   const { mutate: createAgreement } = useMutation({
     mutationFn: async (apt) => {
-
       if (!user) {
-        // just navigating unauthenticated person 
+        // just navigating unauthenticated person
         navigate("/auth", { state: { from: "/apartments" } });
         throw new Error("User not authenticated");
       }
@@ -66,7 +76,7 @@ const Apartments = () => {
         block: apt.block,
         apartmentNo: apt.apartmentNo,
         rent: apt.rent,
-        status: 'pending',
+        status: "pending",
       };
 
       const res = await axiosSecure.post("/agreements", payload);
@@ -74,25 +84,27 @@ const Apartments = () => {
     },
     onSuccess: () => {
       Swal.fire({
-        icon: 'success',
-        title: 'Agreement Submitted!',
-        text: 'Your apartment agreement has been submitted for review.',
-        confirmButtonColor: '#142921',
+        icon: "success",
+        title: "Agreement Submitted!",
+        text: "Your apartment agreement has been submitted for review.",
+        confirmButtonColor: "#142921",
         timer: 3000,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
-      queryClient.invalidateQueries(['apartments']);
+      queryClient.invalidateQueries(["apartments"]);
     },
     onError: (err) => {
       if (err.message === "User not authenticated") return; // as we don't want to show error swal for un authenticated person
 
       Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: err.response?.data?.message || 'An error occurred while submitting the agreement.',
-        confirmButtonColor: '#142921'
+        icon: "error",
+        title: "Error!",
+        text:
+          err.response?.data?.message ||
+          "An error occurred while submitting the agreement.",
+        confirmButtonColor: "#142921",
       });
-    }
+    },
   });
 
   const handleFilter = () => {
@@ -103,7 +115,7 @@ const Apartments = () => {
     createAgreement(apt);
   };
 
-  // animation variants 
+  // animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -111,9 +123,9 @@ const Apartments = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const headerVariants = {
@@ -123,9 +135,9 @@ const Apartments = () => {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const pageVariants = {
@@ -135,9 +147,9 @@ const Apartments = () => {
       scale: 1,
       transition: {
         duration: 0.4,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const loadingVariants = {
@@ -147,16 +159,16 @@ const Apartments = () => {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
+        ease: "easeOut",
+      },
     },
     exit: {
       opacity: 0,
       scale: 0.8,
       transition: {
-        duration: 0.3
-      }
-    }
+        duration: 0.3,
+      },
+    },
   };
 
   if (isError) {
@@ -166,8 +178,12 @@ const Apartments = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-red-100">
             <MdOutlineReportGmailerrorred className="w-8 h-8 text-red-500" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Unable to load apartments</h3>
-          <p className="text-gray-600 mb-6">We couldn't fetch the apartments. Please try again.</p>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            Unable to load apartments
+          </h3>
+          <p className="text-gray-600 mb-6">
+            We couldn't fetch the apartments. Please try again.
+          </p>
           <button
             onClick={refetch}
             className="px-6 py-2 bg-[#142921] text-white rounded-lg hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
@@ -178,9 +194,6 @@ const Apartments = () => {
       </div>
     );
   }
-
-
-
 
   return (
     <motion.div
@@ -224,7 +237,9 @@ const Apartments = () => {
             animate="visible"
             exit="exit"
           >
-            <h2 className="text-2xl font-semibold text-[#142921] mb-6">Filter Apartments</h2>
+            <h2 className="text-2xl font-semibold text-[#142921] mb-6">
+              Filter Apartments
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -273,7 +288,11 @@ const Apartments = () => {
                   <motion.div
                     className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                   />
                 ) : (
                   <>
@@ -322,7 +341,10 @@ const Apartments = () => {
                   <div className="relative overflow-hidden h-48">
                     <motion.img
                       loading="lazy"
-                      src={apt.image || '/default-apartment.jpg'}
+                      src={
+                        getCloudinaryImage(apt.image, 600) ||
+                        "/default-apartment.jpg"
+                      }
                       alt={`Apartment ${apt.apartmentNo}`}
                       className="h-full w-full object-cover"
                       whileHover={{ scale: 1.1 }}
@@ -334,33 +356,40 @@ const Apartments = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <FiDollarSign  className="text-xs" />
+                      <FiDollarSign className="text-xs" />
                       <span>{apt.rent.toLocaleString()}</span>
                     </motion.div>
                   </div>
 
                   <div className="p-6">
+                               
                     <div className="space-y-4 mb-6">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
                           <FiLayers className="text-[#142921]" />
                           Floor
                         </span>
-                        <span className="text-lg font-semibold text-[#142921]">{apt.floor}</span>
+                        <span className="text-lg font-semibold text-[#142921]">
+                          {apt.floor}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
                           <FiHome className="text-[#142921]" />
                           Block
                         </span>
-                        <span className="text-lg font-semibold text-[#142921]">{apt.block}</span>
+                        <span className="text-lg font-semibold text-[#142921]">
+                          {apt.block}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-500 flex items-center gap-2">
                           <FiHash className="text-[#142921]" />
                           Apartment No
                         </span>
-                        <span className="text-lg font-semibold text-[#142921]">{apt.apartmentNo}</span>
+                        <span className="text-lg font-semibold text-[#142921]">
+                          {apt.apartmentNo}
+                        </span>
                       </div>
                     </div>
 
@@ -393,12 +422,12 @@ const Apartments = () => {
                 className="text-6xl mb-4"
                 animate={{
                   rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.1, 1],
                 }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: "easeInOut",
                 }}
               >
                 🏠
@@ -433,7 +462,7 @@ const Apartments = () => {
           >
             <div className="flex gap-1 bg-white rounded-xl shadow-lg p-1">
               <motion.button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
                 className="px-4 py-2 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-gray-600 hover:bg-gray-100"
                 whileHover={{ scale: 1.1 }}
@@ -458,10 +487,11 @@ const Apartments = () => {
                   <motion.button
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${page === pageNum
-                      ? "bg-[#142921] text-white shadow-md"
-                      : "text-gray-600 hover:bg-gray-100"
-                      }`}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      page === pageNum
+                        ? "bg-[#142921] text-white shadow-md"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
                     variants={pageVariants}
                     initial="hidden"
                     animate="visible"
@@ -475,7 +505,7 @@ const Apartments = () => {
               })}
 
               <motion.button
-                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
                 className="px-4 py-2 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-gray-600 hover:bg-gray-100"
                 whileHover={{ scale: 1.1 }}
